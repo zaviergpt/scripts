@@ -19,7 +19,7 @@ curl -SsL https://playit-cloud.github.io/ppa/key.gpg | gpg --dearmor | sudo tee 
 echo "deb [signed-by=/etc/apt/trusted.gpg.d/playit.gpg] https://playit-cloud.github.io/ppa/data ./" | sudo tee /etc/apt/sources.list.d/playit-cloud.list
 sudo apt update && sudo apt upgrade -y
 sudo apt install playit -y
-update-alternatives --auto
+sudo update-alternatives --auto
 wget https://download.oracle.com/java/21/archive/jdk-21.0.2_linux-x64_bin.deb
 sudo dpkg -i jdk-21.0.2_linux-x64_bin.deb
 wget https://piston-data.mojang.com/v1/objects/145ff0858209bcfc164859ba735d4199aafa1eea/server.jar
