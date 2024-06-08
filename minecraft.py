@@ -19,7 +19,7 @@ echo "deb [signed-by=/etc/apt/trusted.gpg.d/playit.gpg] https://playit-cloud.git
 sudo apt update
 sudo apt install playit -y
 sudo update-alternatives --auto
-sudo apt install openjdk-21-jre-headless
+sudo apt install openjdk-21-jre-headless -y
 wget https://piston-data.mojang.com/v1/objects/145ff0858209bcfc164859ba735d4199aafa1eea/server.jar
 java -Xmx3G -Xms3G -jar server.jar nogui
         """)
