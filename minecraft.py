@@ -20,8 +20,8 @@ sudo apt update
 sudo apt install playit -y
 sudo apt install openjdk-21-jre-headless -y
 wget https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
-sudo update-alternatives --auto
-java -Xmx3G -Xms3G -jar server.jar nogui
+sudo update-alternatives --auto java
+java -Xmx8G -Xms8G -jar server.jar nogui
         """)
         while True:
             if os.path.isfile("server.properties"):
@@ -40,7 +40,7 @@ java -Xmx3G -Xms3G -jar server.jar nogui
 
     def server(self):
         print("\n==========[ Starting Server ... ]==========\n")
-        os.system("java -Xmx3G -Xms3G -jar server.jar nogui")
+        os.system("java -Xmx8G -Xms8G -jar server.jar nogui")
     
     def tunnel(self):
         while True:
