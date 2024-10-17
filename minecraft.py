@@ -18,9 +18,9 @@ curl -SsL https://playit-cloud.github.io/ppa/key.gpg | gpg --dearmor | sudo tee 
 echo "deb [signed-by=/etc/apt/trusted.gpg.d/playit.gpg] https://playit-cloud.github.io/ppa/data ./" | sudo tee /etc/apt/sources.list.d/playit-cloud.list
 sudo apt update
 sudo apt install playit -y
-sudo update-alternatives --auto
 sudo apt install openjdk-21-jre-headless -y
 wget https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
+sudo update-alternatives --auto
 java -Xmx3G -Xms3G -jar server.jar nogui
         """)
         while True:
