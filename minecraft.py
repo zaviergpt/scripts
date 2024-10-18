@@ -40,7 +40,10 @@ java -Xmx8G -Xms8G -jar server.jar nogui
 
     def server(self):
         print("\n==========[ Starting Server ... ]==========\n")
-        os.system("java -Xmx8G -Xms8G -jar server.jar nogui")
+        os.system("""
+sudo update-alternatives --auto java
+java -Xmx8G -Xms8G -jar server.jar nogui
+        """)
     
     def tunnel(self):
         while True:
