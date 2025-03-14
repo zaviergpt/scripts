@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fingerprint Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        p {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Fingerprint Authentication</h2>
+        <button id="registerBtn">Register Fingerprint</button>
+        <button id="loginBtn">Login with Fingerprint</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        function bufferToBase64(buffer) {
+            return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+        }
+
+        document.getElementById("registerBtn").addEventListener("click", async () => {
+            if (!window.PublicKeyCredential) {
+                alert("WebAuthn is not supported in this browser.");
+                return;
+            }
+
+            try {
+                const credential = await navigator.credentials.create({
+                    publicKey: {
+                        challenge: Uint8Array.from("randomChallenge", c => c.charCodeAt(0)),
+                        rp: { name: "My Website" },
+                        user: {
+                            id: Uint8Array.from("user123", c => c.charCodeAt(0)),
+                            name: "user@example.com",
+                            displayName: "User Example"
+                        },
+                        pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+                        authenticatorSelection: { authenticatorAttachment: "platform" },
+                        timeout: 60000
+                    }
+                });
+
+                localStorage.setItem("credentialId", bufferToBase64(credential.rawId));
+                document.getElementById("message").innerText = "Fingerprint Registered Successfully!";
+            } catch (error) {
+                console.error("Error during registration:", error);
+                document.getElementById("message").innerText = "Registration Failed!";
+            }
+        });
+
+        document.getElementById("loginBtn").addEventListener("click", async () => {
+            if (!window.PublicKeyCredential) {
+                alert("WebAuthn is not supported in this browser.");
+                return;
+            }
+
+            const storedCredentialId = localStorage.getItem("credentialId");
+            if (!storedCredentialId) {
+                alert("No fingerprint registered. Please register first.");
+                return;
+            }
+
+            try {
+                const credential = await navigator.credentials.get({
+                    publicKey: {
+                        challenge: Uint8Array.from("randomChallenge", c => c.charCodeAt(0)),
+                        allowCredentials: [{
+                            id: Uint8Array.from(atob(storedCredentialId), c => c.charCodeAt(0)),
+                            type: "public-key"
+                        }],
+                        timeout: 60000
+                    }
+                });
+
+                document.getElementById("message").innerText = "Fingerprint Authentication Successful!";
+            } catch (error) {
+                console.error("Error during authentication:", error);
+                document.getElementById("message").innerText = "Authentication Failed!";
+            }
+        });
+    </script>
+</body>
+</html>
